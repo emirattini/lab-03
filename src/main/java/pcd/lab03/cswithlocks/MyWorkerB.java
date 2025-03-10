@@ -14,8 +14,11 @@ public class MyWorkerB extends Worker {
 	public void run(){
 		while (true){
 		  try {
+			  // Se avessi usato synchronyzed sui metodi b1/b2 non avrei avuto modo di
+			  // sbloccare il lock nel caso in cui i metodi fossero stati usati
+			  // Con lockInterruptibly invece tiro eccezione se il lock è occupato
 			  lock.lockInterruptibly();
-			  b1();	
+			  b1();
 			  b2();
 		  } catch (InterruptedException ex) {
 		  } finally {

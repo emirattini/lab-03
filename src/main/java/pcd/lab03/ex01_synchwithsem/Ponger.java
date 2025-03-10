@@ -1,13 +1,25 @@
 package pcd.lab03.ex01_synchwithsem;
 
+import java.util.concurrent.Semaphore;
+
 public class Ponger extends ActiveComponent {
-	
-	public Ponger() {
-	}	
+
+	private Semaphore ballArrived, ballHit;
+
+	public Ponger(Semaphore ballArrived, Semaphore ballHit) {
+		this.ballArrived = ballArrived;
+		this.ballHit = ballHit;
+	}
 	
 	public void run() {
 		while (true) {
-			println("pong");
+            try {
+                ballArrived.acquire();
+				println("pong");
+				ballHit.release();
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }
